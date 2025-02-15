@@ -9,7 +9,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [firstname, setFirstName] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // Initialize to false
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const { session, signUpNewUser } = UserAuth();
@@ -17,35 +17,35 @@ const Signup = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(""); // Clear previous errors
+    setError("");
 
     try {
       const { data, error } = await signUpNewUser(email, password, firstname);
       if (error) {
-        setError(error.message); // Set error message
+        setError(error.message);
       } else {
-        navigate("/"); // Redirect on success
+        navigate("/");
       }
     } catch (error) {
-      setError("An unexpected error occurred."); // Handle unexpected errors
+      setError("An unexpected error occurred.");
     } finally {
-      setLoading(false); // Reset loading state
+      setLoading(false);
     }
   };
 
   return (
-    <div>
+    <div className="md:flex md:justify-center">
       <form onSubmit={handleSignUp}>
-        <h2>Sign up</h2>
-        <p>
+        <h2 className="p-5 font-semibold text-2xl">Sign up</h2>
+        <p className="pl-5">
           Already have an account? <Link to="/login">Sign in</Link>
         </p>
-        <div>
+        <div className="mt-5">
           <Input
             type="text"
             placeholder="First Name"
             value={firstname}
-            onChange={(e) => setFirstName(e.target.value)} // Fixed: Use setFirstName
+            onChange={(e) => setFirstName(e.target.value)}
             required
           />
           <Input
@@ -62,7 +62,7 @@ const Signup = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <Button type="submit" disabled={loading}>
+          <Button type="submit" disabled={loading} className="mt-4">
             {loading ? "Signing up..." : "Sign up"}
           </Button>
           {error && <p style={{ color: "red" }}>{error}</p>}

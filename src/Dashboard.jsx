@@ -19,45 +19,42 @@ const Dashboard = () => {
     const { data, error } = await supabase
       .from("blog_posts")
       .select("*")
-      .eq("user_id", session.user.id); // Fetch posts for the logged-in user
+      .eq("user_id", session.user.id);
 
-    // if (error) {
-    //   console.log("Error fetching posts:", error);
-    // } else {
-    //   setPosts(data);
-    // }
     setPosts(data);
   };
   const handleSignOut = async () => {
-    await signOut(); // Call the signOut function
-    // if (error) {
-    //   console.log("Error signing out:", error);
-    // } else {
-    //   navigate("/"); // Redirect to home page after signing out
-    // }
+    await signOut();
+
     navigate("/");
   };
 
   return (
     <div>
-      <h1>
+      <h1 className="m-5 font-semibold text-2xl text-center">
         Your Dashboard{" "}
-        <Link to={"/create"}>
-          <Button>Create your post</Button>
-        </Link>
       </h1>
+      <Link to={"/create"}>
+        <Button className="ml-5">Create your post</Button>
+      </Link>
       {posts.length === 0 ? (
         <p>You haven't created any posts yet. </p>
       ) : (
         posts.map((post) => (
-          <div key={post.id}>
-            <h2>{post.title}</h2>
-            <p>{post.content}</p>
-            <p>Created at: {new Date(post.created_at).toLocaleString()}</p>
-            <Button onClick={handleSignOut}>Sign Out</Button>
-          </div>
+          <Link to={"/" + post.id}>
+            <div key={post.id} className="p-5">
+              <h2 className="font-bold">{post.title}</h2>
+
+              <p className="">
+                Created at: {new Date(post.created_at).toLocaleString()}
+              </p>
+            </div>
+          </Link>
         ))
       )}
+      <Button onClick={handleSignOut} className="ml-5">
+        Sign Out
+      </Button>
     </div>
   );
 };

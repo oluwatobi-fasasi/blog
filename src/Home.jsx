@@ -1,64 +1,3 @@
-// import React, { useEffect, useState } from "react";
-// import { supabase } from "./supabase";
-// import { Button } from "@/components/ui/button";
-// import {
-//   Card,
-//   CardContent,
-//   CardDescription,
-//   CardFooter,
-//   CardHeader,
-//   CardTitle,
-// } from "@/components/ui/card";
-// import { Link } from "react-router-dom";
-
-// const Home = () => {
-//   const [blogpost, setBlogpost] = useState([]);
-//   useEffect(() => {
-//     fetchData();
-//   }, []);
-
-//   async function fetchData() {
-//     const { data } = await supabase.from("blog_posts").select("*");
-//     setBlogpost(data);
-//   }
-//   return (
-//     <div>
-//       <h1>Your Story</h1>
-
-//       <Link to={"/login"}>
-//         <Button>Login</Button>
-//       </Link>
-//       <Link to={"/signup"}>
-//         <Button>Singup</Button>
-//       </Link>
-//       <section>
-//         {blogpost.map((content) => (
-//           <Card key={content.id}>
-//             <CardHeader>
-//               <CardTitle>{content.title}</CardTitle>
-//               <CardDescription>Author: {content.author}</CardDescription>
-//             </CardHeader>
-//             <CardContent>
-//               {/* <p>{content.post}</p> */}
-//               <p className="text-gray-600">
-//                 {content.post.substring(0, 100)}...
-//               </p>
-//               <Link to={"/" + content.id}>
-//                 <Button>Read</Button>
-//               </Link>
-//             </CardContent>
-//             {/* <CardFooter>
-//               <p>{content.author}</p>
-//             </CardFooter> */}
-//           </Card>
-//         ))}
-//       </section>
-//     </div>
-//   );
-// };
-
-// export default Home;
-
 import React, { useEffect, useState } from "react";
 import { supabase } from "./supabase";
 import { Button } from "@/components/ui/button";
@@ -70,13 +9,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Link } from "react-router-dom";
-import { UserAuth } from "./context/AuthContext"; // Import the AuthContext
+import { UserAuth } from "./context/AuthContext";
 
 const Home = () => {
   const [blogpost, setBlogpost] = useState([]);
-  const { session } = UserAuth(); // Get the session from AuthContext
-
-  // console.log(session.user.user_metadata.first_name);
+  const { session } = UserAuth();
 
   useEffect(() => {
     fetchData();
@@ -89,16 +26,15 @@ const Home = () => {
 
   return (
     <div>
-      <h1>Your Story</h1>
+      <h1 className="text-2xl font-bold text-center">Your Story</h1>
 
-      {/* Conditionally render user info or login/signup buttons */}
       {session ? (
         <div>
           <p>Welcome, {session.user.email}</p>
           <p>Name: {session.user.user_metadata?.first_name || "Unknown"}</p>
         </div>
       ) : (
-        <div>
+        <div className="m-5 flex justify-center gap-6">
           <Link to={"/login"}>
             <Button>Login</Button>
           </Link>
@@ -108,19 +44,21 @@ const Home = () => {
         </div>
       )}
 
-      <section>
+      <section className="md:text-center">
         {blogpost.map((content) => (
           <Card key={content.id}>
             <CardHeader>
               <CardTitle>{content.title}</CardTitle>
-              <CardDescription>Author: {content.author}</CardDescription>
+              <CardDescription className="font-semibold">
+                Author: {content.author}
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <p className="text-gray-600">
                 {content.post.substring(0, 100)}...
               </p>
               <Link to={"/" + content.id}>
-                <Button>Read</Button>
+                <Button className="mt-4">Read more</Button>
               </Link>
             </CardContent>
           </Card>

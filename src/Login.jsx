@@ -8,7 +8,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false); // Initialize to false
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const { signInUser } = UserAuth();
@@ -16,27 +16,27 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(""); // Clear previous errors
+    setError("");
 
     try {
       const { data, error } = await signInUser(email, password);
       if (error) {
-        setError(error.message); // Set error message
+        setError(error.message);
       } else {
-        navigate("/dashboard"); // Redirect on success
+        navigate("/dashboard");
       }
     } catch (error) {
-      setError("An unexpected error occurred."); // Handle unexpected errors
+      setError("An unexpected error occurred.");
     } finally {
-      setLoading(false); // Reset loading state
+      setLoading(false);
     }
   };
 
   return (
-    <div>
+    <div className="md:flex md:justify-center">
       <form onSubmit={handleLogin}>
-        <h2>Login</h2>
-        <p>
+        <h2 className="p-5 font-semibold text-2xl">Login</h2>
+        <p className="pl-5">
           Don't have an account? <Link to="/signup">Sign up</Link>
         </p>
         <div>
@@ -54,7 +54,7 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <Button type="submit" disabled={loading}>
+          <Button type="submit" disabled={loading} className="mt-4">
             {loading ? "Logging in..." : "Login"}
           </Button>
           {error && <p style={{ color: "red" }}>{error}</p>}
