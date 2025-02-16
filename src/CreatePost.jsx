@@ -18,14 +18,17 @@ const CreatePost = () => {
 
     const { data: user } = await supabase.auth.getUser();
 
-    console.log(user.user.id);
-
-    await supabase.from("blog_posts").insert({
-      author: author,
-      title: title,
-      post: post,
-      user_id: user.user.id,
-    });
+    await supabase
+      .from("blog_posts")
+      .insert([
+        {
+          author: author,
+          title: title,
+          post: post,
+          user_id: user.user?.id || null,
+        },
+      ])
+      .select();
 
     navigate("/");
   };

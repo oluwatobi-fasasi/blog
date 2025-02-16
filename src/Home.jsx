@@ -27,11 +27,19 @@ const Home = () => {
   return (
     <div>
       <h1 className="text-2xl font-bold text-center">Your Story</h1>
+      <Link to={"/create"} className="flex justify-center">
+        <Button className="ml-5 mt-5">Create your post</Button>
+      </Link>
 
       {session ? (
         <div>
-          <p>Welcome, {session.user.email}</p>
-          <p>Name: {session.user.user_metadata?.first_name || "Unknown"}</p>
+          <p className="font-semibold">
+            Welcome, {session.user.user_metadata?.first_name || "Unknown"}
+          </p>
+          <p className="font-semibold">Email: {session.user.email}</p>
+          <Link to={"/dashboard"}>
+            <Button>Go to dashboard</Button>
+          </Link>
         </div>
       ) : (
         <div className="m-5 flex justify-center gap-6">

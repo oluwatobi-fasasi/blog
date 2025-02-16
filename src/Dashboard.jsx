@@ -37,6 +37,9 @@ const Dashboard = () => {
       <Link to={"/create"}>
         <Button className="ml-5">Create your post</Button>
       </Link>
+      <Link to={"/"}>
+        <Button className="ml-5">Homepage</Button>
+      </Link>
       {posts.length === 0 ? (
         <p>You haven't created any posts yet. </p>
       ) : (

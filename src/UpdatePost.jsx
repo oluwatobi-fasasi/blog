@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Input } from "./components/ui/input";
 import { Textarea } from "./components/ui/textarea";
 import { Button } from "./components/ui/button";
@@ -7,10 +7,10 @@ import { supabase } from "./supabase";
 
 const UpdatePost = () => {
   const { id } = useParams();
-  const [author, setAuthor] = useState("");
+  // const [author, setAuthor] = useState("");
   const [title, setTitle] = useState("");
   const [post, setPost] = useState("");
-
+  const navigate = useNavigate();
   useEffect(() => {
     fetchData();
   }, [id]);
@@ -21,36 +21,19 @@ const UpdatePost = () => {
       .select("*")
       .eq("id", id)
       .single();
-    setAuthor(data.author);
+    // setAuthor(data.author);
     setTitle(data.title);
     setPost(data.post);
   }
 
-  //   const handleAuthor = (e) => {
-  //     setPost((prev) => {
-  //       return { ...prev, [e.target.name]: e.target.value };
-  //     });
-  //   };
-  //   const handleTitle = (e) => {
-  //     setPost((prev) => {
-  //       return { ...prev, [e.target.name]: e.target.value };
-  //     });
-  //   };
-  //   const handlePost = (e) => {
-  //     setPost((prev) => {
-  //       return { ...prev, [e.target.name]: e.target.value };
-  //     });
-  //   };
   async function updatePost(e) {
     e.preventDefault();
-    const { error } = await supabase
+
+    await supabase
       .from("blog_posts")
-      .update({
-        author,
-        title,
-        post,
-      })
+      .update({ title: title, post: post })
       .eq("id", id);
+    navigate("/dashboard");
   }
   return (
     <div>
@@ -58,8 +41,8 @@ const UpdatePost = () => {
         <Input
           type="text"
           name="author"
-          value={author}
-          onChange={(e) => setAuthor(e.target.value)}
+          // value={author}
+          // onChange={(e) => setAuthor(e.target.value)}
         />
 
         <Input
