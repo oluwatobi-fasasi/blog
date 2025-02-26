@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { supabase } from "./supabase";
+import React, { useEffect } from "react";
+
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -9,20 +9,16 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Link } from "react-router-dom";
-import { UserAuth } from "./context/AuthContext";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPosts } from "../redux/post/postSlice";
 
 const Home = () => {
-  const [blogpost, setBlogpost] = useState([]);
-  const { session } = UserAuth();
-
+  const { session, user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const { posts, loading, error } = useSelector((state) => state.posts);
   useEffect(() => {
-    fetchData();
+    dispatch(fetchPosts());
   }, []);
-
-  async function fetchData() {
-    const { data } = await supabase.from("blog_posts").select("*");
-    setBlogpost(data);
-  }
 
   return (
     <div>
@@ -53,7 +49,7 @@ const Home = () => {
       )}
 
       <section className="md:text-center">
-        {blogpost.map((content) => (
+        {posts.map((content) => (
           <Card key={content.id}>
             <CardHeader>
               <CardTitle>{content.title}</CardTitle>

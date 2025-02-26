@@ -1,37 +1,21 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Input } from "./components/ui/input";
-import { Button } from "./components/ui/button";
-import { UserAuth } from "./context/AuthContext";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import { signInUser } from "../redux/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const { signInUser } = UserAuth();
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError("");
-
-    try {
-      const { data, error } = await signInUser(email, password);
-      if (error) {
-        setError(error.message);
-      } else {
-        navigate("/dashboard");
-      }
-    } catch (error) {
-      setError("An unexpected error occurred.");
-    } finally {
-      setLoading(false);
-    }
+    dispatch(signInUser({ email, password }));
+    navigate("/dashboard");
   };
-
   return (
     <div className="md:flex md:justify-center">
       <form onSubmit={handleLogin}>
@@ -54,10 +38,11 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <Button type="submit" disabled={loading} className="mt-4">
-            {loading ? "Logging in..." : "Login"}
+          <Button type="submit" disabled={""} className="mt-4">
+            SignIn
+            {/* {loading ? "Logging in..." : "Login"} */}
           </Button>
-          {error && <p style={{ color: "red" }}>{error}</p>}
+          {/* {error && <p style={{ color: "red" }}>{error}</p>} */}
         </div>
       </form>
     </div>

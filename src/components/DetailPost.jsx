@@ -1,27 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
-
-import { Button } from "./components/ui/button";
-import { supabase } from "./supabase";
+import { Button } from "./ui/button";
+import { useSelector, useDispatch } from "react-redux";
+import { fetchPostById, deletePost } from "../redux/post/postSlice";
+import { supabase } from "../supabase";
 
 const DetailPost = () => {
   const { id } = useParams();
-  const [post, setPost] = useState({});
-  const [user, setUser] = useState(null);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  useEffect(() => {
-    fetchData();
-    checkUser();
-  }, [id]);
+  const post = useSelector((state) => state.posts.post);
 
-  async function fetchData() {
-    const { data, error } = await supabase
-      .from("blog_posts")
-      .select("*")
-      .eq("id", id)
-      .single();
-    setPost(data);
-  }
+  const [user, setUser] = React.useState(null);
+
+  useEffect(() => {
+    dispatch(fetchPostById(id));
+    checkUser();
+  }, [dispatch, id]);
 
   async function checkUser() {
     const {
@@ -30,12 +25,14 @@ const DetailPost = () => {
     setUser(user);
   }
 
-  async function handleDelete() {
-    await supabase.from("blog_posts").delete().eq("id", id);
-    navigate("/dashboard");
-  }
+  const handleDelete = () => {
+    dispatch(deletePost(id)).then(() => {
+      navigate("/dashboard");
+    });
+  };
 
   const isAuthor = user && user.id === post.user_id;
+
   return (
     <div className="p-5">
       <Link to={"/"}>

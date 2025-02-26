@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 
 import { useNavigate } from "react-router-dom";
-import { supabase } from "./supabase";
-import { Input } from "./components/ui/input";
-import { Textarea } from "./components/ui/textarea";
-import { Button } from "./components/ui/button";
+import { supabase } from "../supabase";
+import { Textarea } from "./ui/textarea";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
 
 const CreatePost = () => {
   const [title, setTitle] = useState("");

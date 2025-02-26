@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Input } from "./components/ui/input";
-import { Textarea } from "./components/ui/textarea";
-import { Button } from "./components/ui/button";
-import { supabase } from "./supabase";
+import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
+import { Button } from "./ui/button";
+import { supabase } from "../supabase";
 
 const UpdatePost = () => {
   const { id } = useParams();

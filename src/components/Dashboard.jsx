@@ -1,14 +1,17 @@
 import React, { useEffect, useState } from "react";
 
-import { supabase } from "./supabase";
-import { UserAuth } from "./context/AuthContext";
+import { supabase } from "../supabase";
+
 import { Link, useNavigate } from "react-router-dom";
-import { Button } from "./components/ui/button";
+import { Button } from "./ui/button";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../redux/auth/authSlice";
 
 const Dashboard = () => {
   const [posts, setPosts] = useState([]);
-  const { session, signOut } = UserAuth();
+  const { session, user } = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   useEffect(() => {
     if (session) {
       fetchUserPosts();
@@ -24,7 +27,7 @@ const Dashboard = () => {
     setPosts(data);
   };
   const handleSignOut = async () => {
-    await signOut();
+    await dispatch(logoutUser());
 
     navigate("/");
   };
@@ -44,7 +47,7 @@ const Dashboard = () => {
         <p>You haven't created any posts yet. </p>
       ) : (
         posts.map((post) => (
-          <Link to={"/" + post.id}>
+          <Link to={"/" + post.id} key={post.id}>
             <div key={post.id} className="p-5">
               <h2 className="font-bold">{post.title}</h2>
 

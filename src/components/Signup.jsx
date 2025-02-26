@@ -1,36 +1,24 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Input } from "./components/ui/input";
-import { Button } from "./components/ui/button";
-import { UserAuth } from "./context/AuthContext";
+import { Input } from "./ui/input";
+import { Button } from "./ui/button";
+import { signUpNewUsers } from "../redux/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [firstname, setFirstName] = useState("");
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
+  // const { loading, error } = useSelector((state) => {
+  //   state.auth;
+  // });
   const navigate = useNavigate();
 
-  const { session, signUpNewUser } = UserAuth();
-  console.log(email, password, firstname);
   const handleSignUp = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setError("");
-
-    try {
-      const { data, error } = await signUpNewUser(email, password, firstname);
-      if (error) {
-        setError(error.message);
-      } else {
-        navigate("/");
-      }
-    } catch (error) {
-      setError("An unexpected error occurred.");
-    } finally {
-      setLoading(false);
-    }
+    dispatch(signUpNewUsers({ email, password, first_name: firstname }));
+    navigate("/");
   };
 
   return (
@@ -62,10 +50,11 @@ const Signup = () => {
             onChange={(e) => setPassword(e.target.value)}
             required
           />
-          <Button type="submit" disabled={loading} className="mt-4">
-            {loading ? "Signing up..." : "Sign up"}
+          <Button type="submit" className="mt-4" disabled={""}>
+            {/* {loading ? "Signing up..." : "Sign Up"} */}
+            signUp
           </Button>
-          {error && <p style={{ color: "red" }}>{error}</p>}
+          {/* {error && <p className="text-red-500 mt-2">{error}</p>} */}
         </div>
       </form>
     </div>
