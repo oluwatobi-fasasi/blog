@@ -10,9 +10,7 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [firstname, setFirstName] = useState("");
   const dispatch = useDispatch();
-  // const { loading, error } = useSelector((state) => {
-  //   state.auth;
-  // });
+
   const navigate = useNavigate();
 
   const handleSignUp = async (e) => {
@@ -31,7 +29,7 @@ const Signup = () => {
         <div className="mt-5">
           <Input
             type="text"
-            placeholder="First Name"
+            placeholder="First_Name"
             value={firstname}
             onChange={(e) => setFirstName(e.target.value)}
             required
@@ -51,10 +49,8 @@ const Signup = () => {
             required
           />
           <Button type="submit" className="mt-4" disabled={""}>
-            {/* {loading ? "Signing up..." : "Sign Up"} */}
-            signUp
+            SignUp
           </Button>
-          {/* {error && <p className="text-red-500 mt-2">{error}</p>} */}
         </div>
       </form>
     </div>

@@ -4,27 +4,22 @@ import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { supabase } from "../supabase";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchPostById } from "@/redux/post/postSlice";
 
 const UpdatePost = () => {
   const { id } = useParams();
-  // const [author, setAuthor] = useState("");
+  const dispatch = useDispatch();
+  const posts = useSelector((state) => state.posts.post);
+
   const [title, setTitle] = useState("");
   const [post, setPost] = useState("");
   const navigate = useNavigate();
   useEffect(() => {
-    fetchData();
+    dispatch(fetchPostById(id));
+    setTitle(posts.title);
+    setPost(posts.post);
   }, [id]);
-
-  async function fetchData() {
-    const { data, error } = await supabase
-      .from("blog_posts")
-      .select("*")
-      .eq("id", id)
-      .single();
-    // setAuthor(data.author);
-    setTitle(data.title);
-    setPost(data.post);
-  }
 
   async function updatePost(e) {
     e.preventDefault();
@@ -35,16 +30,10 @@ const UpdatePost = () => {
       .eq("id", id);
     navigate("/dashboard");
   }
+
   return (
     <div>
       <form onSubmit={updatePost}>
-        <Input
-          type="text"
-          name="author"
-          // value={author}
-          // onChange={(e) => setAuthor(e.target.value)}
-        />
-
         <Input
           type="text"
           name="title"

@@ -13,9 +13,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchPosts } from "../redux/post/postSlice";
 
 const Home = () => {
-  const { session, user } = useSelector((state) => state.auth);
+  const { session } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const { posts, loading, error } = useSelector((state) => state.posts);
+  const { posts } = useSelector((state) => state.posts);
   useEffect(() => {
     dispatch(fetchPosts());
   }, []);
@@ -49,24 +49,27 @@ const Home = () => {
       )}
 
       <section className="md:text-center">
-        {posts.map((content) => (
-          <Card key={content.id}>
-            <CardHeader>
-              <CardTitle>{content.title}</CardTitle>
-              <CardDescription className="font-semibold">
-                Author: {content.author}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600">
-                {content.post.substring(0, 100)}...
-              </p>
-              <Link to={"/" + content.id}>
-                <Button className="mt-4">Read more</Button>
-              </Link>
-            </CardContent>
-          </Card>
-        ))}
+        {posts
+          .slice()
+          .reverse()
+          .map((content) => (
+            <Card key={content.id}>
+              <CardHeader>
+                <CardTitle>{content.title}</CardTitle>
+                <CardDescription className="font-semibold">
+                  Author: {content.author}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">
+                  {content.post.substring(0, 100)}...
+                </p>
+                <Link to={"/" + content.id}>
+                  <Button className="mt-4">Read more</Button>
+                </Link>
+              </CardContent>
+            </Card>
+          ))}
       </section>
     </div>
   );

@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { supabase } from "@/supabase";
 
-//  Fetch blog posts from Supabase
+
 export const fetchPosts = createAsyncThunk("posts/fetchPosts", async (_, { rejectWithValue }) => {
     try {
         const { data, error } = await supabase.from("blog_posts").select("*");
@@ -28,7 +28,7 @@ export const deletePost = createAsyncThunk(
     'posts/deletePost',
     async (id, { dispatch }) => {
         await supabase.from('blog_posts').delete().eq('id', id);
-        dispatch(fetchPostById()); // Assuming you have a fetchPosts action to refresh the list
+        dispatch(fetchPostById());
     }
 );
 

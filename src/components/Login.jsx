@@ -16,6 +16,7 @@ const Login = () => {
     dispatch(signInUser({ email, password }));
     navigate("/dashboard");
   };
+
   return (
     <div className="md:flex md:justify-center">
       <form onSubmit={handleLogin}>

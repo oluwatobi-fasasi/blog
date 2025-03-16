@@ -9,7 +9,7 @@ import { logoutUser } from "../redux/auth/authSlice";
 
 const Dashboard = () => {
   const [posts, setPosts] = useState([]);
-  const { session, user } = useSelector((state) => state.auth);
+  const { session, user } = useSelector((state) => state.auth || {});
   const navigate = useNavigate();
   const dispatch = useDispatch();
   useEffect(() => {

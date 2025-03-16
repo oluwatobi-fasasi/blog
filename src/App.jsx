@@ -15,17 +15,14 @@ const App = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Check session on app load
     dispatch(checkSession());
 
-    // Listen for auth state changes
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         dispatch(checkSession());
       }
     );
 
-    // Cleanup listener on unmount
     return () => {
       authListener.subscription.unsubscribe();
     };

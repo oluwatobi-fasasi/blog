@@ -2,7 +2,7 @@ import { supabase } from "@/supabase";
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 
-//  Check for an active session when the app loads
+
 export const checkSession = createAsyncThunk("auth/checkSession", async (_, { rejectWithValue }) => {
     try {
         const { data } = await supabase.auth.getSession();
@@ -48,12 +48,13 @@ export const signInUser = createAsyncThunk(
     }
 )
 
-//  Async thunk for logging out users
+
+
 export const logoutUser = createAsyncThunk("auth/logoutUser", async (_, { rejectWithValue }) => {
     try {
         const { error } = await supabase.auth.signOut();
         if (error) throw error;
-        return null; // No user after logout
+        return null;
     } catch (error) {
         return rejectWithValue(error.message);
     }
@@ -105,7 +106,7 @@ const authSlice = createSlice({
                 state.user = null;
                 state.error = action.payload;
             })
-            // ✅ Logout cases
+
             .addCase(logoutUser.pending, (state) => {
                 state.loading = true;
                 state.error = null;
